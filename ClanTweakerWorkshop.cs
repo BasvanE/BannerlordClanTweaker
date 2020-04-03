@@ -1,20 +1,23 @@
 ﻿using HarmonyLib;
+using System.Xml;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 
 namespace ClanTweaker
 {
-    [HarmonyPatch(typeof(DefaultWorkshopModel), "GetMaxWorkshopCountForPlayer")]
-    class ClanTweakerWorkshop
+    //[HarmonyPatch(typeof(DefaultWorkshopModel), "GetMaxWorkshopCountForPlayer")]
+    public class ClanTweakerWorkshop
     {
         public static void Postfix(ref int __result)
-        {
-            if (ClanTweakerSubModule.settings.workshopMode == "fixed")
-                __result = ClanTweakerSubModule.settings.workshopFixed;
-            else if (ClanTweakerSubModule.settings.workshopMode == "modifier")
-                __result = (Clan.PlayerClan.Tier + 1) * ClanTweakerSubModule.settings.workshopModifier;
-            else if (ClanTweakerSubModule.settings.workshopMode == "increase")
-                __result = Clan.PlayerClan.Tier * ClanTweakerSubModule.settings.workshopIncrease;
-        }
+		{
+			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("WorkshopSettings");
+			string mode = settings.SelectSingleNode("Mode").InnerText;
+
+			if (mode == "modifier")
+                __result = (Clan.PlayerClan.Tier + 1) * int.Parse(settings.SelectSingleNode("ModifierValue").InnerText);
+            else if (mode == "increase")
+                __result = Clan.PlayerClan.Tier * int.Parse(settings.SelectSingleNode("IncreaseValue").InnerText);
+			else if (mode == "fixed")
+                __result = int.Parse(settings.SelectSingleNode("FixedValue").InnerText);
+		}
     }
 }

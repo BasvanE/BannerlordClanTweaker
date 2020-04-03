@@ -1,26 +1,30 @@
 ﻿using System;
+using System.Xml;
 using HarmonyLib;
 using TaleWorlds.CampaignSystem;
 using SandBox.ViewModelCollection.Tournament;
-using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 
 namespace ClanTweaker
 {
-    [HarmonyPatch(typeof(DefaultTournamentModel), "GetRenownReward")]
-    class ClanTweakerTournamentRenown
+    //[HarmonyPatch(typeof(DefaultTournamentModel), "GetRenownReward")]
+    public class ClanTweakerTournamentRenown
     {
-        private static void Postfix(Hero winner, Town town, ref int __result)
+        public static void Postfix(Hero winner, Town town, ref int __result)
         {
-            __result = ClanTweakerSubModule.settings.tournamentRenown;
+			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("TournamentSettings");
+
+			__result = int.Parse(settings.SelectSingleNode("RenownGain").InnerText);
         }
     }
 
-    [HarmonyPatch(typeof(TournamentVM), "RefreshBetProperties")]
-    class ClanTweakerTournamentMaxBet
+    //[HarmonyPatch(typeof(TournamentVM), "RefreshBetProperties")]
+    public class ClanTweakerTournamentMaxBet
     {
-        static void Postfix(TournamentVM __instance)
-        {
-            typeof(TournamentVM).GetProperty("MaximumBetValue").SetValue(__instance, Math.Min(ClanTweakerSubModule.settings.tournamentMaxBet, Hero.MainHero.Gold));
+        public static void Postfix(TournamentVM __instance)
+		{
+			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("TournamentSettings");
+
+			typeof(TournamentVM).GetProperty("MaximumBetValue").SetValue(__instance, Math.Min(int.Parse(settings.SelectSingleNode("MaximumBet").InnerText), Hero.MainHero.Gold));
         }
     } 
 }

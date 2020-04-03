@@ -1,33 +1,39 @@
 ﻿using HarmonyLib;
+using System.Xml;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 using TaleWorlds.Library;
 
 namespace ClanTweaker
 {
-    [HarmonyPatch(typeof(DefaultClanTierModel), "GetCompanionLimitForTier")]
-    class ClanTweakerCompanionLimit
+    //[HarmonyPatch(typeof(DefaultClanTierModel), "GetCompanionLimitForTier")]
+    public class ClanTweakerCompanionLimit
     {
-        private static void Postfix(int clanTier, ref int __result)
+        public static void Postfix(int clanTier, ref int __result)
         {
-            if (ClanTweakerSubModule.settings.companionMode == "fixed")
-                __result = ClanTweakerSubModule.settings.companionFixed;
-            else if (ClanTweakerSubModule.settings.companionMode == "modifier")
-                __result = (clanTier + 3) * ClanTweakerSubModule.settings.companionModifier;
-            else if (ClanTweakerSubModule.settings.companionMode == "increase")
-                __result = clanTier * ClanTweakerSubModule.settings.companionIncrease;
+			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("CompanionSettings");
+			string mode = settings.SelectSingleNode("Mode").InnerText;
+
+            if (mode == "modifier")
+				__result = (clanTier + 3) * int.Parse(settings.SelectSingleNode("ModifierValue").InnerText);
+			else if (mode == "increase")
+				__result = clanTier * int.Parse(settings.SelectSingleNode("IncreaseValue").InnerText);
+			else if (mode == "fixed")
+                __result = int.Parse(settings.SelectSingleNode("FixedValue").InnerText);
         }
     }
 
-    [HarmonyPatch(typeof(DefaultClanTierModel), "GetPartyLimitForTier")]
-    class ClanTweakerPartyLimit
+    //[HarmonyPatch(typeof(DefaultClanTierModel), "GetPartyLimitForTier")]
+    public class ClanTweakerPartyLimit
     {
-        private static void Postfix(Clan clan, int clanTierToCheck, ref int __result)
-        {
-            if (ClanTweakerSubModule.settings.partyMode == "fixed")
-                __result = ClanTweakerSubModule.settings.partyFixed;
-            else if (ClanTweakerSubModule.settings.partyMode == "increase")
-                __result = clanTierToCheck * ClanTweakerSubModule.settings.partyIncrease;
+		public static void Postfix(Clan clan, int clanTierToCheck, ref int __result)
+		{
+			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("PartySettings");
+			string mode = settings.SelectSingleNode("Mode").InnerText;
+			
+            if (mode == "increase")
+				__result = clanTierToCheck * int.Parse(settings.SelectSingleNode("IncreaseValue").InnerText);
+			else if (mode == "fixed")
+                __result = int.Parse(settings.SelectSingleNode("FixedValue").InnerText);
 
             int result;
             if (!clan.IsMinorFaction)
@@ -41,8 +47,8 @@ namespace ClanTweaker
                 result = (int)MathF.Clamp(clanTierToCheck, 1f, 4f);
             }
 
-            if (ClanTweakerSubModule.settings.partyMode == "modifier")
-                __result = result * ClanTweakerSubModule.settings.partyModifier;
+            if (mode == "modifier")
+                __result = result * int.Parse(settings.SelectSingleNode("ModifierValue").InnerText);
         }
     }
 }

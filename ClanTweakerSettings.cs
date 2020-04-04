@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents.Party;
 using SandBox.ViewModelCollection.Tournament;
+using TaleWorlds.CampaignSystem.SandBox.GameComponents.Map;
 
 namespace ClanTweaker
 {
@@ -102,6 +103,10 @@ namespace ClanTweaker
 						{
 							var original = typeof(TroopRoster).GetMethod("AddXpToTroop");
 							var prefix = typeof(ClanTweakerTroopExp).GetMethod("Prefix");
+							toPatch.Add((original, prefix, null));
+
+							original = typeof(DefaultCombatXpModel).GetMethod("GetXpFromHit");
+							prefix = typeof(ClanTweakerTroopXpFromHit).GetMethod("Prefix");
 							toPatch.Add((original, prefix, null));
 						}
 						#endregion

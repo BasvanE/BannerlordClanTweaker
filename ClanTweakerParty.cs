@@ -13,9 +13,6 @@ namespace ClanTweaker
         {
 			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("PartySizeSettings");
 
-			SkillObject leadership = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Leadership");
-            SkillObject steward = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Steward");
-
 			bool flag;
 			if (settings.SelectSingleNode("AffectClanParties").InnerText == "true")
 				flag = party.LeaderHero != null && (party.LeaderHero == Hero.MainHero || party.LeaderHero.Clan.Name == Hero.MainHero.Clan.Name);
@@ -24,7 +21,10 @@ namespace ClanTweaker
 
 			if (flag)
             {
-                int num = (int)Math.Ceiling((double)party.LeaderHero.GetSkillValue(leadership) * float.Parse(settings.SelectSingleNode("LeadershipBonus").InnerText));
+				SkillObject leadership = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Leadership");
+				SkillObject steward = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Steward");
+
+				int num = (int)Math.Ceiling((double)party.LeaderHero.GetSkillValue(leadership) * float.Parse(settings.SelectSingleNode("LeadershipBonus").InnerText));
                 __result += num;
                 if (explanation != null)
                 {
@@ -47,9 +47,6 @@ namespace ClanTweaker
 		{
 			XmlNode settings = ClanTweakerSubModule.settings.xmlSettings.ChildNodes[1].SelectSingleNode("PartySizeSettings");
 
-			SkillObject leadership = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Leadership");
-			SkillObject steward = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Steward");
-
 			bool flag;
 			if (settings.SelectSingleNode("AffectClanParties").InnerText == "true")
 				flag = party.LeaderHero != null && (party.LeaderHero == Hero.MainHero || party.LeaderHero.Clan.Name == Hero.MainHero.Clan.Name);
@@ -59,7 +56,10 @@ namespace ClanTweaker
 
 			if (party.LeaderHero != null && party.LeaderHero == Hero.MainHero)
             {
-                int num = (int)Math.Ceiling((double)party.LeaderHero.GetSkillValue(leadership) * float.Parse(settings.SelectSingleNode("LeadershipBonus").InnerText) * 0.25f);
+				SkillObject leadership = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Leadership");
+				SkillObject steward = SkillObject.FindFirst((SkillObject x) => x.Name.ToString() == "Steward");
+
+				int num = (int)Math.Ceiling((double)party.LeaderHero.GetSkillValue(leadership) * float.Parse(settings.SelectSingleNode("LeadershipBonus").InnerText) * 0.25f);
                 __result += num;
                 if (explanation != null)
                 {

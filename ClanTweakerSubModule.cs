@@ -13,8 +13,6 @@ namespace ClanTweaker
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
-			Harmony.DEBUG = true;
-			FileLog.Reset();
 			Harmony harmony = new Harmony("mod.bannerlord.tweaker");
 			foreach ((MethodBase original, MethodInfo prefix, MethodInfo postfix) patch in settings.toPatch)
 			{

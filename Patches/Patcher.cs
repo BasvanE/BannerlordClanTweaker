@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Reflection;
+using reflection = System.Reflection;
 using System.Windows.Forms;
 using HarmonyLib;
-using TaleWorlds.MountAndBlade;
 
 namespace ClanTweaker
 {
-    class ClanTweakerSubModule : MBSubModuleBase
-    {
-        public static ClanTweakerSettings settings = new ClanTweakerSettings();
-
-        protected override void OnSubModuleLoad()
-        {
-            base.OnSubModuleLoad();
+	public static class Patcher
+	{
+		public static void PatchAll()
+		{
 			Harmony harmony = new Harmony("mod.bannerlord.tweaker");
-			foreach ((MethodBase original, MethodInfo prefix, MethodInfo postfix) patch in settings.toPatch)
+			foreach ((reflection.MethodBase original, reflection.MethodInfo prefix, reflection.MethodInfo postfix) patch in ClanTweakerSubModule.settings.toPatch)
 			{
 				try
 				{
@@ -38,5 +34,5 @@ namespace ClanTweaker
 				}
 			}
 		}
-    }
+	}
 }

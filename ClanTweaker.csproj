@@ -169,6 +169,9 @@
       <HintPath>$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.Diamond.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="TaleWorlds.MountAndBlade.GauntletUI">
+      <HintPath>..\..\..\Modules\Native\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.GauntletUI.dll</HintPath>
+    </Reference>
     <Reference Include="TaleWorlds.MountAndBlade.GauntletUI.Widgets, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.GauntletUI.Widgets.dll</HintPath>
@@ -178,6 +181,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.Helpers.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="TaleWorlds.MountAndBlade.View">
+      <HintPath>..\..\..\Modules\Native\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.View.dll</HintPath>
     </Reference>
     <Reference Include="TaleWorlds.MountAndBlade.ViewModelCollection, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -246,13 +252,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClanTweakerCrafting.cs" />
-    <Compile Include="ClanTweakerExp.cs" />
-    <Compile Include="ClanTweakerParty.cs" />
-    <Compile Include="ClanTweakerTournament.cs" />
-    <Compile Include="ClanTweakerWorkshop.cs" />
+    <Compile Include="Menu\Credits\ModOptionsCreditsScreen.cs" />
+    <Compile Include="Menu\Credits\ModOptionsCreditsGauntletScreen.cs" />
+    <Compile Include="Menu\ManagedModOptions.cs" />
+    <Compile Include="Menu\ManagedModOptionData.cs" />
+    <Compile Include="Menu\ModOptionsCategoryVM.cs" />
+    <Compile Include="Menu\Credits\ModOptionsCreditsItemVM.cs" />
+    <Compile Include="Menu\Credits\ModOptionsCreditsVM.cs" />
+    <Compile Include="Menu\ModOptionsGauntletScreen.cs" />
+    <Compile Include="Menu\ModOptionsScreen.cs" />
+    <Compile Include="Menu\ModOptionsVM.cs" />
+    <Compile Include="Patches\Patcher.cs" />
+    <Compile Include="Patches\ClanTweakerCrafting.cs" />
+    <Compile Include="Patches\ClanTweakerExp.cs" />
+    <Compile Include="Patches\ClanTweakerParty.cs" />
+    <Compile Include="Patches\ClanTweakerTournament.cs" />
+    <Compile Include="Patches\ClanTweakerWorkshop.cs" />
     <Compile Include="ClanTweakerClanModel.cs" />
-    <Compile Include="ClanTweakerSubModule.cs" />
+    <Compile Include="Patches\ClanTweakerSubModule.cs" />
     <Compile Include="ClanTweakerSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
